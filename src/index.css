@@ -8,7 +8,7 @@ html,
 }
 
 body {
-  @apply m-0 antialiased bg-purple h-full;
+  @apply m-0 antialiased bg-primary-100 text-primary-900 h-full;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -18,4 +18,16 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+h1 {
+  @apply text-xl font-bold text-black;
+}
+
+h2 {
+  @apply text-lg font-bold;
+}
+
+ul {
+  @apply marker:text-primary-500 list-disc pl-5 space-y-2;
 }
