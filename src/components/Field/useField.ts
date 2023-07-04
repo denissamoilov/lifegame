@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FIELD_SIZE, MAX_SELECTED_FIELDS } from "../../constants/constants";
+import { DELAY, FIELD_SIZE, MAX_SELECTED_FIELDS } from "../../constants/constants";
 import { CoordinatesType, MatrixType } from "../../types/types";
 
 const offsets = [
@@ -24,23 +24,9 @@ export const useFilter = () => {
   const checkNeighborStatus = useCallback(({ x, y }: CoordinatesType) =>
     matrixArray[y][x].alive, [matrixArray]);
 
-  // const getNeighborCoordinates = ({x, y}: CoordinatesType) => {
-  //   let arr: MatrixType[] = [];
-
-  //   // eslint-disable-next-line array-callback-return
-  //   offsets.map((o) => {
-  //     const nX = x + o[0];
-  //     const nY = y + o[1];
-  //     if (nX >= 0 && nX < fieldSize && nY >= 0 && nY < fieldSize) {
-  //       arr = [...arr, {alive: false, x: nX, y: nY}];
-  //     }
-  //   });
-
-  //   return arr;
-  // }
-
-  const checkCurrentCellStatus = useCallback(({alive, x, y }: MatrixType) => {
+  const checkCurrentCellStatus = useCallback(({ alive, x, y }: MatrixType) => {
     let aliveNeighborCounter = 0;
+
     offsets.map((o) => {
       const nX = x + o[0];
       const nY = y + o[1];
@@ -87,11 +73,12 @@ export const useFilter = () => {
     setMatrixArray(updatedMatrixArray);
   };
 
-  const updateCells = useCallback(() =>{
-    setMatrixArray((matrixArray) =>
-      [...matrixArray].map((row) =>
-        row.map((cell) => ({ ...cell, alive: checkCurrentCellStatus(cell) }))
-      ))
+  const updateCells = useCallback(() => {
+    setMatrixArray((matrixArray) => [...matrixArray].map((row) => row.map((cell) => {
+        const isCellAlive = checkCurrentCellStatus(cell);
+        return { ...cell, alive: isCellAlive }
+      })  
+    ))
   }, [checkCurrentCellStatus]);
 
   const onStartHandle = () => {
@@ -105,7 +92,7 @@ export const useFilter = () => {
     () => {
       const interval = setInterval(() => {
         gameStarted && updateCells()
-      }, 1000);
+      }, DELAY);
       return () => clearInterval(interval);
     },
     [gameStarted, matrixArray, updateCells]
