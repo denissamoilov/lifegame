@@ -88,13 +88,11 @@ export const useFilter = () => {
   };
 
   const updateCells = useCallback(() =>{
-    const newMatrixArray: MatrixType[][] = JSON.parse(JSON.stringify(matrixArray));
-    
-    // activeCellMatrix.map((cell) => newMatrixArray[cell.y][cell.x].alive = checkCurrentCellStatus({alive: cell.alive, x: cell.x, y: cell.y}))
-    matrixArray.map((row) => row.map((cell) => newMatrixArray[cell.y][cell.x].alive = checkCurrentCellStatus({alive: cell.alive, x: cell.x, y: cell.y})))
-    
-    setTimeout(() => setMatrixArray(newMatrixArray), 1000);
-  }, [checkCurrentCellStatus, matrixArray]);
+    setMatrixArray((matrixArray) =>
+      [...matrixArray].map((row) =>
+        row.map((cell) => ({ ...cell, alive: checkCurrentCellStatus(cell) }))
+      ))
+  }, [checkCurrentCellStatus]);
 
   const onStartHandle = () => {
     setGameStarted(true);
@@ -105,7 +103,10 @@ export const useFilter = () => {
 
   useEffect(
     () => {
-      gameStarted && updateCells();
+      const interval = setInterval(() => {
+        gameStarted && updateCells()
+      }, 1000);
+      return () => clearInterval(interval);
     },
     [gameStarted, matrixArray, updateCells]
   );

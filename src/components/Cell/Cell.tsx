@@ -17,7 +17,7 @@ export const Cell = ({ alive = false, x, y, onChange }: CellProps) => {
     <div
       onClick={onClickHandle}
       className={cx(
-        "w-8 h-8 cursor-pointer",
+        "w-8 h-8 cursor-pointer transition",
         "hover:shadow-sm hover:bg-hover",
         alive && "!bg-alive shadow-sm rounded-full",
         !alive && "bg-dead shadow-inner rounded"
