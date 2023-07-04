@@ -50,14 +50,9 @@ export const useFilter = () => {
       return null;
     });
 
-    // console.log("cell x: ", x, " :: y:", y," :: has aliveNeighborCounter :", aliveNeighborCounter);
-
     if(aliveNeighborCounter < 2 || aliveNeighborCounter > 3) {
-      // alive && console.log("dead x:", x, ': y:',y)
       return false
     } else if( !alive && aliveNeighborCounter === 3) {
-      // console.log("alive x:", x, ': y:',y)
-      // console.log("----------------------------")
       return true;
     } else if ( alive ) {
       return true;
